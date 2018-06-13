@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Scenic Sydney</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="main_activity_bottom_bar_header_text">Location List</string>
 </resources>

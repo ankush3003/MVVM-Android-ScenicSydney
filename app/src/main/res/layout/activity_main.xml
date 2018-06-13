@@ -1,8 +1,74 @@
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/map"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
+<com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sothree="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sliding_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="photography.social.com.scenicsydney.MainActivity" />
+    android:gravity="bottom"
+    sothree:umanoPanelHeight="@dimen/main_activity_bottom_bar_height"
+    sothree:umanoShadowHeight="@dimen/main_activity_bottom_bar_shadow">
+
+    <fragment
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="photography.social.com.scenicsydney.ui.main.MainActivity"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center" />
+
+    <LinearLayout
+        android:id="@+id/bottomContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/mainActivity_bottomContainer_bg">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="@dimen/main_activity_cardview_elevation"
+            android:layout_margin="@dimen/main_activity_cardview_margin">
+
+            <RelativeLayout
+                android:id="@+id/bottomContainer_header"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/main_activity_bottom_bar_header_height">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/main_activity_bottom_bar_header_text"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:textSize="@dimen/main_activity_bottom_bar_header_textsize"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_margin="@dimen/main_activity_bottom_bar_header_child_margin"/>
+
+                <ImageView
+                    android:layout_width="@dimen/main_activity_bottom_bar_icon_width_height"
+                    android:layout_height="@dimen/main_activity_bottom_bar_icon_width_height"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/showlist"
+                    android:layout_margin="@dimen/main_activity_bottom_bar_header_child_margin"/>
+
+                <View
+                    android:id="@+id/separator"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorPrimary"
+                    android:layout_alignParentBottom="true"
+                    />
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:scrollbars="vertical" />
+
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+
+</com.sothree.slidinguppanel.SlidingUpPanelLayout>
