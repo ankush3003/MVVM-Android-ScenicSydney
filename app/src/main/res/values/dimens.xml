@@ -11,7 +11,7 @@
 
     <!-- Screen Margins for MainActivity List screen -->
     <dimen name="main_activity_list_row_height">64dp</dimen>
-    <dimen name="main_activity_list_row_title_textsize">20sp</dimen>
-    <dimen name="main_activity_list_row_subtitle_textsize">16sp</dimen>
-    <dimen name="main_activity_list_row_distance_textsize">14sp</dimen>
+    <dimen name="main_activity_list_row_title_textsize">16sp</dimen>
+    <dimen name="main_activity_list_row_subtitle_textsize">14sp</dimen>
+    <dimen name="main_activity_list_row_distance_textsize">12sp</dimen>
 </resources>

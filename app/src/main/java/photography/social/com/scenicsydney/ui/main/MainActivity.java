@@ -1,7 +1,10 @@
 package photography.social.com.scenicsydney.ui.main;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -13,15 +16,20 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import photography.social.com.scenicsydney.R;
+import photography.social.com.scenicsydney.data.database.LocationEntry;
+import photography.social.com.scenicsydney.utils.InjectorUtils;
 
 public class MainActivity extends FragmentActivity implements
         OnMapReadyCallback,
         GoogleMap.OnMapLongClickListener,
         GoogleMap.OnMapClickListener,
         GoogleMap.OnMarkerClickListener,
-        GoogleMap.OnInfoWindowClickListener {
+        GoogleMap.OnInfoWindowClickListener,
+        LocationsAdapter.LocationsAdapterOnItemClickHandler {
 
     private GoogleMap mMap;
+    private RecyclerView mRecyclerView;
+    private LocationsAdapter mLocationsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +39,8 @@ public class MainActivity extends FragmentActivity implements
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        mRecyclerView = findViewById(R.id.recycler_view);
     }
 
 
@@ -87,6 +97,8 @@ public class MainActivity extends FragmentActivity implements
         mMap.setOnMapClickListener(this);
         mMap.setOnMarkerClickListener(this);
         mMap.setOnInfoWindowClickListener(this);
+
+        populateList();
     }
 
     @Override
@@ -109,5 +121,36 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public void onInfoWindowClick(Marker marker) {
         Toast.makeText(this, "" + marker.getSnippet(), Toast.LENGTH_SHORT).show();
+    }
+
+    private void populateList() {
+        LinearLayoutManager layoutManager =
+                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setHasFixedSize(true);
+
+        mLocationsAdapter = new LocationsAdapter(this, this);
+        mRecyclerView.setAdapter(mLocationsAdapter);
+
+        // Get ViewModel and start observing data.
+        getViewModel().getLocations().observe(this, locationEntries -> {
+            // refresh list
+            mLocationsAdapter.reloadLocations(locationEntries);
+        });
+    }
+
+    /**
+     * Gets ViewModel from MainActivityViewModelFactory instantiated using dependency injection
+     *
+     * @return MainActivityViewModel
+     */
+    private MainActivityViewModel getViewModel() {
+        MainActivityViewModelFactory factory = InjectorUtils.provideMainActivityViewModelFactory(this);
+        return ViewModelProviders.of(this, factory).get(MainActivityViewModel.class);
+    }
+
+    @Override
+    public void onItemClick(LocationEntry locationEntry) {
+
     }
 }
