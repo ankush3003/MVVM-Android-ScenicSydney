@@ -6,6 +6,8 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
+import java.util.List;
+
 /**
  * {@link Dao} provides APIs for all data operations.
  */
@@ -16,5 +18,5 @@ public interface LocationDao {
     void bulkInsert(LocationEntry... locationEntries);
 
     @Query("SELECT * FROM locations")
-    LiveData<LocationEntry> getAllLocations();
+    LiveData<List<LocationEntry>> getAllLocations();
 }

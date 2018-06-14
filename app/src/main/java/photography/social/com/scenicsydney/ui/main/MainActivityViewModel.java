@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel;
 
 import java.util.List;
 
+import photography.social.com.scenicsydney.data.ScenicSydneyRepository;
 import photography.social.com.scenicsydney.data.database.LocationEntry;
 
 /**

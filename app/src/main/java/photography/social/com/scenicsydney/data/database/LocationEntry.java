@@ -18,7 +18,6 @@ public class LocationEntry {
     private String name;
     private long latitude;
     private long longitude;
-    private Date lastUpdated;
     private String notes;
 
     /**
@@ -27,15 +26,13 @@ public class LocationEntry {
      * @param name name of location
      * @param latitude lat
      * @param longitude long
-     * @param lastUpdated last updated date
      * @param notes additional notes
      */
     @Ignore
-    public LocationEntry(String name, long latitude, long longitude, Date lastUpdated, String notes) {
+    public LocationEntry(String name, long latitude, long longitude, String notes) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.lastUpdated = lastUpdated;
         this.notes = notes;
     }
 
@@ -45,15 +42,13 @@ public class LocationEntry {
      * @param name name of location
      * @param latitude lat
      * @param longitude long
-     * @param lastUpdated last updated date
      * @param notes additional notes
      */
-    public LocationEntry(int id, String name, long latitude, long longitude, Date lastUpdated, String notes) {
+    public LocationEntry(int id, String name, long latitude, long longitude, String notes) {
         this.id = id;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.lastUpdated = lastUpdated;
         this.notes = notes;
     }
 
@@ -71,10 +66,6 @@ public class LocationEntry {
 
     public long getLongitude() {
         return longitude;
-    }
-
-    public Date getLastUpdated() {
-        return lastUpdated;
     }
 
     public String getNotes() {

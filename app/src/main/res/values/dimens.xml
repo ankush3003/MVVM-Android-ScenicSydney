@@ -2,11 +2,16 @@
     <!-- Screen Margins for MainActivity -->
     <dimen name="main_activity_bottom_bar_height">72dp</dimen>
     <dimen name="main_activity_bottom_bar_header_height">64dp</dimen>
-    <dimen name="main_activity_bottom_bar_header_textsize">18sp</dimen>
+    <dimen name="main_activity_bottom_bar_header_textsize">20sp</dimen>
     <dimen name="main_activity_bottom_bar_header_child_margin">8dp</dimen>
     <dimen name="main_activity_bottom_bar_icon_width_height">28dp</dimen>
     <dimen name="main_activity_bottom_bar_shadow">5dp</dimen>
     <dimen name="main_activity_cardview_elevation">5dp</dimen>
     <dimen name="main_activity_cardview_margin">8dp</dimen>
 
+    <!-- Screen Margins for MainActivity List screen -->
+    <dimen name="main_activity_list_row_height">64dp</dimen>
+    <dimen name="main_activity_list_row_title_textsize">20sp</dimen>
+    <dimen name="main_activity_list_row_subtitle_textsize">16sp</dimen>
+    <dimen name="main_activity_list_row_distance_textsize">14sp</dimen>
 </resources>

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import photography.social.com.scenicsydney.R;
 import photography.social.com.scenicsydney.data.database.LocationEntry;
 
 
@@ -37,7 +38,7 @@ class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.LocationAda
 
     @Override
     public LocationAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(layoutId, viewGroup, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.row_view, viewGroup, false);
         view.setFocusable(true);
         return new LocationAdapterViewHolder(view);
     }
@@ -51,8 +52,10 @@ class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.LocationAda
     @Override
     public void onBindViewHolder(LocationAdapterViewHolder locationAdapterViewHolder, int position) {
         LocationEntry locationEntry = mLocations.get(position);
-        // TODO: locationAdapterViewHolder
 
+        locationAdapterViewHolder.locationName.setText(locationEntry.getName());
+        locationAdapterViewHolder.locationDescription.setText(locationEntry.getNotes());
+        locationAdapterViewHolder.distanceFromUser.setText(locationEntry.getNotes());
     }
 
     /**
@@ -79,16 +82,16 @@ class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.LocationAda
     }
 
     class LocationAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-//        final TextView locationName;
-//        final TextView locationDescription;
-//        final TextView distanceFromUser;
+        final TextView locationName;
+        final TextView locationDescription;
+        final TextView distanceFromUser;
 
         LocationAdapterViewHolder(View view) {
             super(view);
 
-//            locationName = view.findViewById(R.id.weather_icon);
-//            locationDescription = view.findViewById(R.id.date);
-//            distanceFromUser = view.findViewById(R.id.weather_description);
+            locationName = view.findViewById(R.id.title);
+            locationDescription = view.findViewById(R.id.subtitle);
+            distanceFromUser = view.findViewById(R.id.distance);
 
             view.setOnClickListener(this);
         }
