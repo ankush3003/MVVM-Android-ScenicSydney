@@ -2,6 +2,7 @@ package photography.social.com.scenicsydney.data.network;
 
 import android.app.Activity;
 import android.content.Context;
+import android.location.Location;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,10 +63,12 @@ public class LocationDataParser {
 
         for (int i = 0; i < jsonLocationArray.length(); i++) {
             JSONObject jsonLocationObject = jsonLocationArray.getJSONObject(i);
+            Location location = new Location("");
+            location.setLatitude(Double.parseDouble(jsonLocationObject.optString(LOCATION_LAT, "0")));
+            location.setLongitude(Double.parseDouble(jsonLocationObject.optString(LOCATION_LONG, "0")));
             locationEntries[i] = new LocationEntry(
                     jsonLocationObject.optString(LOCATION_NAME, ""),
-                    jsonLocationObject.optLong(LOCATION_LAT, 0),
-                    jsonLocationObject.optLong(LOCATION_LONG, 0),
+                    location,
                     "");
         }
         return locationEntries;

@@ -32,9 +32,12 @@ public class ScenicSydneyRepository {
         mExecutors = executors;
 
         mExecutors.diskIO().execute(() -> {
-            // Insert our new locations data into database
-            mLocationDao.bulkInsert(mLocationDataParser.parseFromFile());
-            Log.d(TAG, "New values inserted");
+            // App running for first time or data reset
+            if(mLocationDao.getLocationsCount() == 0) {
+                // Insert our new locations data into database
+                mLocationDao.bulkInsert(mLocationDataParser.parseFromFile());
+                Log.d(TAG, "New values inserted");
+            }
         });
     }
 

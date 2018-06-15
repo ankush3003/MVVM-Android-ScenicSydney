@@ -22,7 +22,6 @@ import photography.social.com.scenicsydney.utils.InjectorUtils;
 public class MainActivity extends FragmentActivity implements
         OnMapReadyCallback,
         GoogleMap.OnMapLongClickListener,
-        GoogleMap.OnMapClickListener,
         GoogleMap.OnMarkerClickListener,
         GoogleMap.OnInfoWindowClickListener,
         LocationsAdapter.LocationsAdapterOnItemClickHandler {
@@ -57,44 +56,7 @@ public class MainActivity extends FragmentActivity implements
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng milsons = new LatLng(-33.850750, 151.212519);
-        LatLng bondi = new LatLng(-33.889967, 151.276440);
-        LatLng circular = new LatLng(-33.860178, 151.212706);
-        LatLng manly = new LatLng(-33.797151, 151.288784);
-        LatLng darling = new LatLng(-33.873379, 151.200940);
-
-        Marker mMilsons = mMap.addMarker(new MarkerOptions()
-                .position(milsons)
-                .title("Melbourne")
-                /*.snippet("wkjebfc lew cqwnc wcnapwn weqiha nxawpocj e wdjcpx qwmqd")*/);
-
-        Marker mbondi = mMap.addMarker(new MarkerOptions()
-                .position(bondi)
-                .title("bondi")
-                /*.snippet("wkjebfc lew cqwnc wcnapwn weqiha nxawpocj e wdjcpx qwmqdewq qwl c")*/);
-
-        Marker mcircular = mMap.addMarker(new MarkerOptions()
-                .position(circular)
-                .title("circular")
-                /*.snippet("wkjebfc lew cqwnc wcnapwn weqiha nxawpocj e wdjcpx qwmqd")*/);
-
-        Marker mmanly = mMap.addMarker(new MarkerOptions()
-                .position(manly)
-                .title("Melbourne")
-                /*.snippet("wkjebfc lew cqwnc wcnapwn weqiha nxawpocj e wdjcpx qwmqd sle clae cilc;mwamce ac[m caec j")*/);
-
-        Marker mdarling = mMap.addMarker(new MarkerOptions()
-                .position(darling)
-                .title("darling")
-                /*.snippet("wkjebfc lew cqwnc wcnapwn weqiha nxawpocj e wdjcpx qwmqd")*/);
-
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(bondi));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo( 11.0f ) );
-
         mMap.setOnMapLongClickListener(this);
-        mMap.setOnMapClickListener(this);
         mMap.setOnMarkerClickListener(this);
         mMap.setOnInfoWindowClickListener(this);
 
@@ -106,11 +68,6 @@ public class MainActivity extends FragmentActivity implements
         //lstLatLngs.add(point);
         //mMap.clear();
         mMap.addMarker(new MarkerOptions().position(latLng));
-    }
-
-    @Override
-    public void onMapClick(LatLng latLng) {
-
     }
 
     @Override
@@ -134,8 +91,27 @@ public class MainActivity extends FragmentActivity implements
 
         // Get ViewModel and start observing data.
         getViewModel().getLocations().observe(this, locationEntries -> {
-            // refresh list
-            mLocationsAdapter.reloadLocations(locationEntries);
+            if (locationEntries != null && locationEntries.size() != 0) {
+                // refresh list
+                mLocationsAdapter.reloadLocations(locationEntries);
+
+                // refresh list
+                LatLng latLng = null;
+
+                for (LocationEntry locationEntry: locationEntries) {
+                    latLng = new LatLng(locationEntry.getLocation().getLatitude(), locationEntry.getLocation().getLongitude());
+
+                    mMap.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .title(locationEntry.getName()));
+                }
+
+                if(latLng != null) {
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                    mMap.animateCamera(CameraUpdateFactory.zoomTo( 11.0f ) );
+                }
+            }
+
         });
     }
 

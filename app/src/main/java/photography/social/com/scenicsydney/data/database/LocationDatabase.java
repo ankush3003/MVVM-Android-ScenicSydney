@@ -11,6 +11,7 @@ import android.content.Context;
  * Specify list of {@link TypeConverters} required.
  */
 @Database(entities = {LocationEntry.class}, version = 1)
+@TypeConverters(LocationConvertor.class)
 public abstract class LocationDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "locations";
 
