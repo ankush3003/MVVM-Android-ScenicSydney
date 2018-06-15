@@ -1,6 +1,7 @@
 package photography.social.com.scenicsydney.ui.main;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import photography.social.com.scenicsydney.R;
 import photography.social.com.scenicsydney.data.database.LocationEntry;
+import photography.social.com.scenicsydney.ui.detail.DetailActivity;
 import photography.social.com.scenicsydney.utils.InjectorUtils;
 
 public class MainActivity extends FragmentActivity implements
@@ -72,6 +74,9 @@ public class MainActivity extends FragmentActivity implements
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+        Intent detailActivityIntent = new Intent(this, DetailActivity.class);
+        startActivity(detailActivityIntent);
+        overridePendingTransition(R.anim.enter, R.anim.exit);
         return false;
     }
 
