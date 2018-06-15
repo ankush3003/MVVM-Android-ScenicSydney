@@ -1,13 +1,14 @@
 package photography.social.com.scenicsydney.ui.main;
 
+import android.app.Activity;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -16,6 +17,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.List;
 
 import photography.social.com.scenicsydney.R;
 import photography.social.com.scenicsydney.data.database.LocationEntry;
@@ -26,12 +29,13 @@ public class MainActivity extends FragmentActivity implements
         OnMapReadyCallback,
         GoogleMap.OnMapLongClickListener,
         GoogleMap.OnMarkerClickListener,
-        GoogleMap.OnInfoWindowClickListener,
         LocationsAdapter.LocationsAdapterOnItemClickHandler {
 
     private GoogleMap mMap;
     private RecyclerView mRecyclerView;
     private LocationsAdapter mLocationsAdapter;
+    private final int mDeatilActivityRequestCode = 101;
+    private Marker mLastCustomMarker = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,32 +65,25 @@ public class MainActivity extends FragmentActivity implements
 
         mMap.setOnMapLongClickListener(this);
         mMap.setOnMarkerClickListener(this);
-        mMap.setOnInfoWindowClickListener(this);
 
         populateList();
     }
 
     @Override
     public void onMapLongClick(LatLng latLng) {
-        //lstLatLngs.add(point);
-        //mMap.clear();
-        mMap.addMarker(new MarkerOptions().position(latLng));
+        mLastCustomMarker = mMap.addMarker(new MarkerOptions().position(latLng));
+        navigateToDetailActivity(latLng.latitude, latLng.longitude, true);
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        navigateToDetailActivity(marker.getPosition().latitude, marker.getPosition().longitude);
+        navigateToDetailActivity(marker.getPosition().latitude, marker.getPosition().longitude, false);
         return false;
     }
 
     @Override
-    public void onInfoWindowClick(Marker marker) {
-        Toast.makeText(this, "" + marker.getSnippet(), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     public void onItemClick(LocationEntry locationEntry) {
-        navigateToDetailActivity(locationEntry.getLocation().getLatitude(), locationEntry.getLocation().getLongitude());
+        navigateToDetailActivity(locationEntry.getLocation().getLatitude(), locationEntry.getLocation().getLongitude(), false);
     }
 
     private void populateList() {
@@ -101,6 +98,7 @@ public class MainActivity extends FragmentActivity implements
         // Get ViewModel and start observing data.
         getViewModel().getLocations().observe(this, locationEntries -> {
             if (locationEntries != null && locationEntries.size() != 0) {
+                mMap.clear();
                 // refresh list
                 mLocationsAdapter.reloadLocations(locationEntries);
 
@@ -134,11 +132,22 @@ public class MainActivity extends FragmentActivity implements
         return ViewModelProviders.of(this, factory).get(MainActivityViewModel.class);
     }
 
-    private void navigateToDetailActivity(double lat, double lng) {
+    private void navigateToDetailActivity(double lat, double lng, boolean isNewMarker) {
         Intent detailActivityIntent = new Intent(this, DetailActivity.class);
         detailActivityIntent.putExtra(DetailActivity.INTENT_EXTRA_LAT_KEY, lat);
         detailActivityIntent.putExtra(DetailActivity.INTENT_EXTRA_LNG_KEY, lng);
-        startActivity(detailActivityIntent);
+        detailActivityIntent.putExtra(DetailActivity.INTENT_EXTRA_IS_NEW_MARKER, isNewMarker);
+        startActivityForResult(detailActivityIntent, mDeatilActivityRequestCode);
         overridePendingTransition(R.anim.enter, R.anim.exit);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == mDeatilActivityRequestCode) {
+            if (resultCode == Activity.RESULT_CANCELED && mLastCustomMarker != null) {
+                mLastCustomMarker.remove();
+            }
+        }
     }
 }

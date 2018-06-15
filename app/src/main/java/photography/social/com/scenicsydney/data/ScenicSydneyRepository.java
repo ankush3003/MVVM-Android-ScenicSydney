@@ -71,4 +71,15 @@ public class ScenicSydneyRepository {
     public LiveData<LocationEntry> getLocationEntry(Location location) {
         return mLocationDao.getLocationEntry(location);
     }
+
+    /**
+     * Inserts data - if new OR
+     * Updates data - if conflict happens
+     *
+     */
+    public void insertOrUpdateData(LocationEntry locationEntry) {
+        mExecutors.diskIO().execute(() -> {
+                mLocationDao.bulkInsert(locationEntry);
+        });
+    }
 }

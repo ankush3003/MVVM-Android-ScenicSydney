@@ -20,4 +20,8 @@ public class DetailActivityViewModel extends ViewModel {
     public LiveData<LocationEntry> getLocationEntry(Location location) {
         return mScenicSydneyRepository.getLocationEntry(location);
     }
+
+    public void insertOrUpdateData(LocationEntry locationEntry) {
+        mScenicSydneyRepository.insertOrUpdateData(locationEntry);
+    }
 }

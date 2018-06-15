@@ -5,6 +5,7 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.location.Location;
+import android.support.annotation.NonNull;
 
 import java.util.Date;
 
@@ -14,43 +15,24 @@ import java.util.Date;
 @Entity(tableName = "locations", indices = {@Index(value = {"location"}, unique = true)})
 public class LocationEntry {
 
-    @PrimaryKey(autoGenerate = true)
-    private int id;
+    @NonNull
+    @PrimaryKey
+    private Location location;
 
     private String name;
-    private Location location;
     private String notes;
 
     /**
-     * Constructor used by LocationParser.
+     * Constructor.
      *
      * @param name name of location
      * @param location coordinates of location
      * @param notes additional notes
      */
-    @Ignore
     public LocationEntry(String name, Location location, String notes) {
         this.name = name;
         this.location = location;
         this.notes = notes;
-    }
-
-    /**
-     * Constructor used by ROOM for object mapping.
-     *
-     * @param name name of location
-     * @param location coordinates
-     * @param notes additional notes
-     */
-    public LocationEntry(int id, String name, Location location, String notes) {
-        this.id = id;
-        this.name = name;
-        this.location = location;
-        this.notes = notes;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getName() {

@@ -6,4 +6,6 @@
     <string name="prompt_location_name">Name</string>
     <string name="prompt_location_coordinates">Coordinates</string>
     <string name="prompt_location_notes">Special Notes</string>
+    <string name="detail_activity_unnamed_location">Unnamed Location</string>
+    <string name="detail_activity_location_name_required">Location name is mandatory</string>
 </resources>

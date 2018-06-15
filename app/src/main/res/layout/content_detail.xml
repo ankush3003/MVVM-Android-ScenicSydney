@@ -33,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_location_name"
                     android:inputType="textPersonName"
-                    android:digits="0123456789qwertzuiopasdfghjklyxcvbnm"
+                    android:digits="0123456789 qwertzuiopasdfghjklyxcvbnm"
                     android:maxLines="1"
                     android:singleLine="true"
                     />
@@ -54,7 +54,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
-                    android:digits="0123456789,.qwertzuiopasdfghjklyxcvbnm"
+                    android:digits="0123456789,. qwertzuiopasdfghjklyxcvbnm"
                     android:lines="8"
                     android:minLines="6"
                     android:maxLines="10"
