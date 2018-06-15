@@ -3,4 +3,7 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="main_activity_bottom_bar_header_text">Location List</string>
     <string name="title_activity_detail">DetailActivity</string>
+    <string name="prompt_location_name">Name</string>
+    <string name="prompt_location_coordinates">Coordinates</string>
+    <string name="prompt_location_notes">Special Notes</string>
 </resources>

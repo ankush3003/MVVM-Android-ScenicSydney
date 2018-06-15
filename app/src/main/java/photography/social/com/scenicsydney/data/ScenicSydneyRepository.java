@@ -1,6 +1,7 @@
 package photography.social.com.scenicsydney.data;
 
 import android.arch.lifecycle.LiveData;
+import android.location.Location;
 import android.util.Log;
 
 import java.util.List;
@@ -60,5 +61,14 @@ public class ScenicSydneyRepository {
      */
     public LiveData<List<LocationEntry>> getLocations() {
         return mLocationDao.getAllLocations();
+    }
+
+    /**
+     * return data entry matching criteria
+     *
+     * @return LiveData<LocationEntry> entry from db
+     */
+    public LiveData<LocationEntry> getLocationEntry(Location location) {
+        return mLocationDao.getLocationEntry(location);
     }
 }

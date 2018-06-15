@@ -8,6 +8,7 @@ import photography.social.com.scenicsydney.AppExecutors;
 import photography.social.com.scenicsydney.data.ScenicSydneyRepository;
 import photography.social.com.scenicsydney.data.database.LocationDatabase;
 import photography.social.com.scenicsydney.data.network.LocationDataParser;
+import photography.social.com.scenicsydney.ui.detail.DetailActivityViewModelFactory;
 import photography.social.com.scenicsydney.ui.main.MainActivityViewModelFactory;
 
 /**
@@ -29,10 +30,10 @@ public class InjectorUtils {
         return ScenicSydneyRepository.getInstance(database.locationDao(), locationDataParser, executors);
     }
 
-    /*public static DetailViewModelFactory provideDetailViewModelFactory(Context context, Date date) {
-        SunshineRepository repository = provideRepository(context.getApplicationContext());
-        return new DetailViewModelFactory(repository, date);
-    }*/
+    public static DetailActivityViewModelFactory provideDetailActivityViewModelFactory(Context context) {
+        ScenicSydneyRepository repository = provideRepository(context.getApplicationContext());
+        return new DetailActivityViewModelFactory(repository);
+    }
 
     public static MainActivityViewModelFactory provideMainActivityViewModelFactory(Context context) {
         ScenicSydneyRepository repository = provideRepository(context);

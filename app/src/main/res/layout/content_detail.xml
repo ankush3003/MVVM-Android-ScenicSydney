@@ -14,11 +14,57 @@
         android:layout_height="match_parent"
         android:elevation="@dimen/main_activity_cardview_elevation">
 
-        <RelativeLayout
+        <ScrollView
+            android:id="@+id/detail_form"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            >
 
-        </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/first_child"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/locationName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/prompt_location_name"
+                    android:inputType="textPersonName"
+                    android:digits="0123456789qwertzuiopasdfghjklyxcvbnm"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    />
+
+                <EditText
+                    android:id="@+id/locationCoordinates"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/prompt_location_coordinates"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:enabled="false"
+                    android:layout_marginTop="@dimen/main_activity_cardview_margin"
+                    />
+
+                <EditText
+                    android:id="@+id/locationNotes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:digits="0123456789,.qwertzuiopasdfghjklyxcvbnm"
+                    android:lines="8"
+                    android:minLines="6"
+                    android:maxLines="10"
+                    android:scrollbars="vertical"
+                    android:hint="@string/prompt_location_notes"
+                    android:layout_marginTop="@dimen/main_activity_cardview_margin"
+                    />
+            </LinearLayout>
+        </ScrollView>
+
     </android.support.v7.widget.CardView>
 
 </android.support.constraint.ConstraintLayout>

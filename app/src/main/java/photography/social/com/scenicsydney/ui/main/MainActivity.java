@@ -2,6 +2,7 @@ package photography.social.com.scenicsydney.ui.main;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -74,15 +75,18 @@ public class MainActivity extends FragmentActivity implements
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Intent detailActivityIntent = new Intent(this, DetailActivity.class);
-        startActivity(detailActivityIntent);
-        overridePendingTransition(R.anim.enter, R.anim.exit);
+        navigateToDetailActivity(marker.getPosition().latitude, marker.getPosition().longitude);
         return false;
     }
 
     @Override
     public void onInfoWindowClick(Marker marker) {
         Toast.makeText(this, "" + marker.getSnippet(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onItemClick(LocationEntry locationEntry) {
+        navigateToDetailActivity(locationEntry.getLocation().getLatitude(), locationEntry.getLocation().getLongitude());
     }
 
     private void populateList() {
@@ -130,8 +134,11 @@ public class MainActivity extends FragmentActivity implements
         return ViewModelProviders.of(this, factory).get(MainActivityViewModel.class);
     }
 
-    @Override
-    public void onItemClick(LocationEntry locationEntry) {
-
+    private void navigateToDetailActivity(double lat, double lng) {
+        Intent detailActivityIntent = new Intent(this, DetailActivity.class);
+        detailActivityIntent.putExtra(DetailActivity.INTENT_EXTRA_LAT_KEY, lat);
+        detailActivityIntent.putExtra(DetailActivity.INTENT_EXTRA_LNG_KEY, lng);
+        startActivity(detailActivityIntent);
+        overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 }
