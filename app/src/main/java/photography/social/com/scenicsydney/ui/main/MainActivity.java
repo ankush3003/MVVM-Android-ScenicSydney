@@ -32,7 +32,7 @@ public class MainActivity extends FragmentActivity implements
         OnMapReadyCallback,
         GoogleMap.OnMapLongClickListener,
         GoogleMap.OnMarkerClickListener,
-        LocationsAdapter.LocationsAdapterOnItemClickHandler {
+        LocationsAdapterOnItemClickHandler {
 
     private GoogleMap mMap;
 
@@ -53,6 +53,7 @@ public class MainActivity extends FragmentActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -62,12 +63,9 @@ public class MainActivity extends FragmentActivity implements
 
     /**
      * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
+     * Adds markers as per db and populates list sorted by distance
+     *
+     * @param googleMap map
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -79,6 +77,10 @@ public class MainActivity extends FragmentActivity implements
         populateList();
     }
 
+    /**
+     * Handles back press event.
+     * Closes Slideuppanel if expanded.
+     */
     @Override
     public void onBackPressed() {
         if (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED) {
@@ -88,23 +90,41 @@ public class MainActivity extends FragmentActivity implements
         super.onBackPressed();
     }
 
+    /**
+     * Handles Map long click - adds new marker
+     *
+     * @param latLng target marker's coordinates
+     */
     @Override
     public void onMapLongClick(LatLng latLng) {
         mLastCustomMarker = mMap.addMarker(new MarkerOptions().position(latLng));
         navigateToDetailActivity(latLng.latitude, latLng.longitude, true);
     }
 
+    /**
+     * Handles marker click - Opens DetailActivity
+     *
+     * @param marker source
+     * @return result
+     */
     @Override
     public boolean onMarkerClick(Marker marker) {
         navigateToDetailActivity(marker.getPosition().latitude, marker.getPosition().longitude, false);
         return false;
     }
 
+    /**
+     * Handles RecyclerView click - Opens DetailActivity
+     * @param locationEntry source object
+     */
     @Override
     public void onItemClick(LocationEntry locationEntry) {
         navigateToDetailActivity(locationEntry.getLocation().getLatitude(), locationEntry.getLocation().getLongitude(), false);
     }
 
+    /**
+     * populates recyclerview as well as markers on map - as per data from db.
+     */
     private void populateList() {
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -163,6 +183,13 @@ public class MainActivity extends FragmentActivity implements
         return ViewModelProviders.of(this, factory).get(MainActivityViewModel.class);
     }
 
+    /**
+     * Navigates to DetailActivity with params.
+     *
+     * @param lat lat
+     * @param lng lng
+     * @param isNewMarker boolean
+     */
     private void navigateToDetailActivity(double lat, double lng, boolean isNewMarker) {
         Intent detailActivityIntent = new Intent(this, DetailActivity.class);
         detailActivityIntent.putExtra(DetailActivity.INTENT_EXTRA_LAT_KEY, lat);
@@ -172,6 +199,13 @@ public class MainActivity extends FragmentActivity implements
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
+    /**
+     * onActivityResult callback
+     *
+     * @param requestCode requestCode
+     * @param resultCode resultCode
+     * @param data data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

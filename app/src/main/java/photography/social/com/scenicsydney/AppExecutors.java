@@ -22,12 +22,24 @@ public class AppExecutors {
     private final Executor mainThread;
     private final Executor networkIO;
 
+    /**
+     * private constructor for singleton init
+     *
+     * @param diskIO disk thread
+     * @param networkIO network thread
+     * @param mainThread main thread
+     */
     private AppExecutors(Executor diskIO, Executor networkIO, Executor mainThread) {
         this.diskIO = diskIO;
         this.networkIO = networkIO;
         this.mainThread = mainThread;
     }
 
+    /**
+     * constructor
+     *
+     * @return AppExecutors instance
+     */
     public static AppExecutors getInstance() {
         if (sInstance == null) {
             synchronized (LOCK) {
@@ -39,18 +51,33 @@ public class AppExecutors {
         return sInstance;
     }
 
+    /**
+     * Disk thread.
+     * @return Executor
+     */
     public Executor diskIO() {
         return diskIO;
     }
 
+    /**
+     * Main Thread.
+     * @return Executor
+     */
     public Executor mainThread() {
         return mainThread;
     }
 
+    /**
+     * Network Thread.
+     * @return Executor
+     */
     public Executor networkIO() {
         return networkIO;
     }
 
+    /**
+     * Gets Looper from mainThread and executes tasks.
+     */
     private static class MainThreadExecutor implements Executor {
         private Handler mainThreadHandler = new Handler(Looper.getMainLooper());
 

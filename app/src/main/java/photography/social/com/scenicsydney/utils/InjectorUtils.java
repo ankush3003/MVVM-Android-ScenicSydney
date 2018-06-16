@@ -2,8 +2,6 @@ package photography.social.com.scenicsydney.utils;
 
 import android.content.Context;
 
-import java.util.Date;
-
 import photography.social.com.scenicsydney.AppExecutors;
 import photography.social.com.scenicsydney.data.ScenicSydneyRepository;
 import photography.social.com.scenicsydney.data.database.LocationDatabase;
@@ -12,16 +10,15 @@ import photography.social.com.scenicsydney.ui.detail.DetailActivityViewModelFact
 import photography.social.com.scenicsydney.ui.main.MainActivityViewModelFactory;
 
 /**
- * Provides static methods to inject the various classes needed for Sunshine
+ * Provides static methods to inject the various classes
  */
 public class InjectorUtils {
-    private final static String TAG = "InjectorUtils";
 
     /**
      * Provides Repository - which handles DB/Network APIs. {@link ScenicSydneyRepository}
      *
-     * @param context
-     * @return
+     * @param context context
+     * @return ScenicSydneyRepository
      */
     public static ScenicSydneyRepository provideRepository(Context context) {
         LocationDatabase database = LocationDatabase.getInstance(context.getApplicationContext());
@@ -30,11 +27,23 @@ public class InjectorUtils {
         return ScenicSydneyRepository.getInstance(database.locationDao(), locationDataParser, executors);
     }
 
+    /**
+     * Provided DetailActivityViewModelFactory
+     *
+     * @param context context
+     * @return DetailActivityViewModelFactory
+     */
     public static DetailActivityViewModelFactory provideDetailActivityViewModelFactory(Context context) {
         ScenicSydneyRepository repository = provideRepository(context.getApplicationContext());
         return new DetailActivityViewModelFactory(repository);
     }
 
+    /**
+     * Provided MainActivityViewModelFactory
+     *
+     * @param context context
+     * @return MainActivityViewModelFactory
+     */
     public static MainActivityViewModelFactory provideMainActivityViewModelFactory(Context context) {
         ScenicSydneyRepository repository = provideRepository(context);
         return new MainActivityViewModelFactory(repository);

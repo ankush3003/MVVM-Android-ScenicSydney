@@ -4,7 +4,6 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 
 import photography.social.com.scenicsydney.data.ScenicSydneyRepository;
-import photography.social.com.scenicsydney.ui.main.MainActivityViewModel;
 
 /**
  * Factory to create {@link DetailActivityViewModel}
@@ -12,10 +11,22 @@ import photography.social.com.scenicsydney.ui.main.MainActivityViewModel;
 public class DetailActivityViewModelFactory extends ViewModelProvider.NewInstanceFactory {
     private final ScenicSydneyRepository mRepository;
 
+    /**
+     * constructor
+     *
+     * @param repository repository
+     */
     public DetailActivityViewModelFactory(ScenicSydneyRepository repository) {
         this.mRepository = repository;
     }
 
+    /**
+     *  creates ViewModel
+     *
+     * @param modelClass target
+     * @param <T>
+     * @return ViewModel
+     */
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
         //noinspection unchecked

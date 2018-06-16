@@ -10,18 +10,33 @@ import photography.social.com.scenicsydney.data.database.LocationEntry;
 /**
  * ViewModel for {@link DetailActivity}
  */
-public class DetailActivityViewModel extends ViewModel {
+class DetailActivityViewModel extends ViewModel {
     private final ScenicSydneyRepository mScenicSydneyRepository;
 
-    public DetailActivityViewModel(ScenicSydneyRepository scenicSydneyRepository) {
+    /**
+     * constructor
+     * @param scenicSydneyRepository repository
+     */
+    DetailActivityViewModel(ScenicSydneyRepository scenicSydneyRepository) {
         this.mScenicSydneyRepository = scenicSydneyRepository;
     }
 
-    public LiveData<LocationEntry> getLocationEntry(Location location) {
+    /**
+     * Retrieves LocationEntry matching location.
+     *
+     * @param location source location
+     * @return LiveData<LocationEntry> result
+     */
+    LiveData<LocationEntry> getLocationEntry(Location location) {
         return mScenicSydneyRepository.getLocationEntry(location);
     }
 
-    public void insertOrUpdateData(LocationEntry locationEntry) {
+    /**
+     * Inserts data: if new OR updates data: if modified
+     *
+     * @param locationEntry target object
+     */
+    void insertOrUpdateData(LocationEntry locationEntry) {
         mScenicSydneyRepository.insertOrUpdateData(locationEntry);
     }
 }

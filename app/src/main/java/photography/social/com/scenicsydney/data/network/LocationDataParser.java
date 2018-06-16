@@ -23,6 +23,7 @@ public class LocationDataParser {
     private static LocationDataParser sInstance;
     private static final Object LOCK = new Object();
 
+    // Keys for json file parsing
     private final String MASTER_DATA_FILENAME = "sample_data.json";
     private final String LOCATION_ARRAY_KEY = "locations";
     private final String LAST_UPDATED_KEY = "updated";
@@ -31,12 +32,19 @@ public class LocationDataParser {
     private final String LOCATION_LAT = "lat";
     private final String LOCATION_LONG = "lng";
 
+    /**
+     * private constructor for singleton initialization
+     *
+     * @param context context
+     */
     private LocationDataParser(Context context) {
         this.mContext = context;
     }
 
     /**
      * Get the singleton for this class
+     *
+     * @param context context
      */
     public static LocationDataParser getInstance(Context context) {
         if (sInstance == null) {
@@ -47,6 +55,11 @@ public class LocationDataParser {
         return sInstance;
     }
 
+    /**
+     * Parses data from json file -  assets/sample_data.json for now.
+     *
+     * @return LocationEntry[] result, null if error occurs
+     */
     public LocationEntry[] parseFromFile() {
         try {
             return fromJson(new JSONObject(loadJSONFromAsset(mContext)));
@@ -56,6 +69,13 @@ public class LocationDataParser {
         }
     }
 
+    /**
+     * Extracts LocationEntry[] from json.
+     *
+     * @param jsonObject source json object.
+     * @return LocationEntry[] result
+     * @throws JSONException
+     */
     private LocationEntry[] fromJson(final JSONObject jsonObject) throws JSONException {
         JSONArray jsonLocationArray = jsonObject.getJSONArray(LOCATION_ARRAY_KEY);
 
@@ -74,6 +94,12 @@ public class LocationDataParser {
         return locationEntries;
     }
 
+    /**
+     * Loads json from assets folder
+     *
+     * @param context activity conext to resolve assets
+     * @return String jsonstring
+     */
     private String loadJSONFromAsset(Context context) {
         String json = null;
         try {

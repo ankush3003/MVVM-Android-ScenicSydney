@@ -15,7 +15,6 @@ import java.util.List;
 import photography.social.com.scenicsydney.R;
 import photography.social.com.scenicsydney.data.database.LocationEntry;
 
-
 /**
  * Exposes a list of Locations to a {@link RecyclerView}.
  */
@@ -29,15 +28,21 @@ class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.LocationAda
     /**
      * Creates LocationsAdapter.
      *
-     * @param context
-     * @param clickHandler
+     * @param context context
+     * @param clickHandler handler
      */
     LocationsAdapter(@NonNull Context context, LocationsAdapterOnItemClickHandler clickHandler) {
         mContext = context;
         mClickHandler = clickHandler;
     }
 
-
+    /**
+     * onCreateViewHolder callback
+     *
+     * @param viewGroup viewgroup
+     * @param viewType type
+     * @return LocationAdapterViewHolder
+     */
     @Override
     public LocationAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.row_view, viewGroup, false);
@@ -57,12 +62,16 @@ class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.LocationAda
 
         locationAdapterViewHolder.locationName.setText(locationEntry.getName());
 
+        // Update locationDescription if provided, "No Description" if none.
         if(TextUtils.isEmpty(locationEntry.getNotes())) {
-            locationAdapterViewHolder.locationDescription.setText("No Description provided");
+            locationAdapterViewHolder.locationDescription.setText(mContext.getResources().getString(R.string.no_description_provided));
+            locationAdapterViewHolder.locationDescription.setTextColor(mContext.getResources().getColor(R.color.darkGrey));
         } else {
             locationAdapterViewHolder.locationDescription.setText(locationEntry.getNotes());
+            locationAdapterViewHolder.locationDescription.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
         }
 
+        // Update distance in Kms
         int distanceInMeters = Math.round(locationEntry.getDistance());
         String distanceString = "" ;
         if(distanceInMeters > 1000) {
@@ -74,7 +83,7 @@ class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.LocationAda
     }
 
     /**
-     * @return The number of items available in our forecast
+     * @return The number of items available
      */
     @Override
     public int getItemCount() {
@@ -92,15 +101,18 @@ class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.LocationAda
         notifyDataSetChanged();
     }
 
-    public interface LocationsAdapterOnItemClickHandler {
-        void onItemClick(LocationEntry locationEntry);
-    }
-
+    /**
+     * view holder class
+     */
     class LocationAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final TextView locationName;
         final TextView locationDescription;
         final TextView distanceFromUser;
 
+        /**
+         * constructor
+         * @param view view
+         */
         LocationAdapterViewHolder(View view) {
             super(view);
 

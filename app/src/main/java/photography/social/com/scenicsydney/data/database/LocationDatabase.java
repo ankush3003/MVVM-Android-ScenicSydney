@@ -8,7 +8,6 @@ import android.content.Context;
 
 /**
  * {@link Database} for project.
- * Specify list of {@link TypeConverters} required.
  */
 @Database(entities = {LocationEntry.class}, version = 1)
 @TypeConverters(LocationConvertor.class)

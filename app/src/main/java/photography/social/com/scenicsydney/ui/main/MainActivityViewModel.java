@@ -14,10 +14,20 @@ import photography.social.com.scenicsydney.data.database.LocationEntry;
 public class MainActivityViewModel extends ViewModel {
     private final LiveData<List<LocationEntry>> mData;
 
+    /**
+     * constructor
+     *
+     * @param scenicSydneyRepository repository
+     */
     public MainActivityViewModel(ScenicSydneyRepository scenicSydneyRepository) {
         mData = scenicSydneyRepository.getLocations();
     }
 
+    /**
+     * Retrieves List of Locations.
+     *
+     * @return LiveData<List<LocationEntry>> result
+     */
     public LiveData<List<LocationEntry>> getLocations() {
         return mData;
     }

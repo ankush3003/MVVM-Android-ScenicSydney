@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -15,18 +14,18 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import photography.social.com.scenicsydney.R;
 import photography.social.com.scenicsydney.data.database.LocationEntry;
 import photography.social.com.scenicsydney.utils.InjectorUtils;
 
+/**
+ * This activity displays data for addition/update of location markers.
+ */
 public class DetailActivity extends AppCompatActivity implements View.OnClickListener{
 
+    // Intent Extras
     public static final String INTENT_EXTRA_LAT_KEY = "intent_extra_lat";
     public static final String INTENT_EXTRA_LNG_KEY = "intent_extra_lng";
     public static final String INTENT_EXTRA_IS_NEW_MARKER = "intent_extra_is_new_marker";
@@ -35,12 +34,17 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     private double mLng;
     private boolean mIsNewMarker;
 
-    @BindView(R.id.locationName) EditText locationName;
-    @BindView(R.id.locationCoordinates) EditText locationCoordinates;
-    @BindView(R.id.locationNotes) EditText locationNotes;
+    // view references
+    @BindView(R.id.locationName) EditText etLocationName;
+    @BindView(R.id.locationCoordinates) EditText etLocationCoordinates;
+    @BindView(R.id.locationNotes) EditText etLocationNotes;
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.toolbar) Toolbar toolbar;
 
+    /**
+     *  get intent extras and populate data accordingly.
+     * @param savedInstanceState savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,16 +62,20 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         populateData();
     }
 
+    /**
+     * Handles view click
+     * @param view target
+     */
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fab:
-                if(!TextUtils.isEmpty(locationName.getText())) {
+                if(!TextUtils.isEmpty(etLocationName.getText())) {
                     insertOrUpdateData();
                     Toast.makeText(this, getString(R.string.detail_activity_data_saved), Toast.LENGTH_SHORT).show();
                     finishActivityWithResult(Activity.RESULT_OK);
                 } else {
-                    locationName.setError(getString(R.string.detail_activity_location_name_required));
+                    etLocationName.setError(getString(R.string.detail_activity_location_name_required));
                 }
                 break;
 
@@ -76,6 +84,11 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    /**
+     * listener
+     * @param item source item
+     * @return boolean result
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -87,6 +100,18 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Handles back press event
+     */
+    @Override
+    public void onBackPressed() {
+        finishActivityWithResult(Activity.RESULT_CANCELED);
+    }
+
+    /**
+     * finishes activity with specified result
+     * @param result resultCode
+     */
     void finishActivityWithResult(int result) {
         Intent returnIntent = new Intent();
         setResult(result, returnIntent);
@@ -94,16 +119,14 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
     }
 
-    @Override
-    public void onBackPressed() {
-        finishActivityWithResult(Activity.RESULT_CANCELED);
-    }
-
+    /**
+     * populates fields
+     */
     private void populateData() {
-        String cordinatesVal = mLat + ", " + mLng;
-        locationCoordinates.setText(cordinatesVal);
+        String coordinatesVal = mLat + ", " + mLng;
+        etLocationCoordinates.setText(coordinatesVal);
 
-        // If not a new marker then populate details
+        // If not a new marker then populate details else blank fields
         if(!mIsNewMarker) {
             Location location = new Location("");
             location.setLatitude(mLat);
@@ -113,8 +136,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             getViewModel().getLocationEntry(location).observe(this, locationEntry -> {
                 if (locationEntry != null) {
                     getSupportActionBar().setTitle(locationEntry.getName());
-                    locationName.setText(locationEntry.getName());
-                    locationNotes.setText(locationEntry.getNotes());
+                    etLocationName.setText(locationEntry.getName());
+                    etLocationNotes.setText(locationEntry.getNotes());
                 }
             });
         } else {
@@ -122,17 +145,22 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    /**
+     * Insert (if new marker) or update (if modified data) in db.
+     */
     private void insertOrUpdateData() {
+        // location is primary key in db
         Location location = new Location("");
         location.setLatitude(mLat);
         location.setLongitude(mLng);
 
         LocationEntry locationEntry = new LocationEntry(
-                locationName.getText().toString(),
+                etLocationName.getText().toString(),
                 location,
-                locationNotes.getText().toString()
+                etLocationNotes.getText().toString()
         );
 
+        // insertOrUodate
         getViewModel().insertOrUpdateData(locationEntry);
     }
 

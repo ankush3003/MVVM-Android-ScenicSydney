@@ -11,10 +11,22 @@ import photography.social.com.scenicsydney.data.ScenicSydneyRepository;
 public class MainActivityViewModelFactory extends ViewModelProvider.NewInstanceFactory {
     private final ScenicSydneyRepository mRepository;
 
+    /**
+     * constructor
+     *
+     * @param repository repository
+     */
     public MainActivityViewModelFactory(ScenicSydneyRepository repository) {
         this.mRepository = repository;
     }
 
+    /**
+     * creates ViewModel
+     *
+     * @param modelClass ViewModel class
+     * @param <T>
+     * @return ViewModel
+     */
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
         //noinspection unchecked
