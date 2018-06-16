@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -63,6 +64,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.fab:
                 if(!TextUtils.isEmpty(locationName.getText())) {
                     insertOrUpdateData();
+                    Toast.makeText(this, getString(R.string.detail_activity_data_saved), Toast.LENGTH_SHORT).show();
                     finishActivityWithResult(Activity.RESULT_OK);
                 } else {
                     locationName.setError(getString(R.string.detail_activity_location_name_required));

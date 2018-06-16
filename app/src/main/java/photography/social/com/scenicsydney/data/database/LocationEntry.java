@@ -22,6 +22,9 @@ public class LocationEntry {
     private String name;
     private String notes;
 
+    @Ignore
+    private float distance;
+
     /**
      * Constructor.
      *
@@ -45,5 +48,13 @@ public class LocationEntry {
 
     public String getNotes() {
         return notes;
+    }
+
+    public float getDistance() {
+        return distance;
+    }
+
+    public void setDistance(float distance) {
+        this.distance = distance;
     }
 }

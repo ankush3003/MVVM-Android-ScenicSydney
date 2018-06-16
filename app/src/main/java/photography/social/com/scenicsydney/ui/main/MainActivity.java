@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +19,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import photography.social.com.scenicsydney.R;
@@ -36,6 +39,11 @@ public class MainActivity extends FragmentActivity implements
     private LocationsAdapter mLocationsAdapter;
     private final int mDeatilActivityRequestCode = 101;
     private Marker mLastCustomMarker = null;
+
+    // Reference location (will be user's current location) hardcoded for now
+    // Used for sorting list based on distance from reference point
+    double mCurrentLatitude = -33.9045681462;
+    double mCurrentLongitude = 151.1956366896;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,10 +103,31 @@ public class MainActivity extends FragmentActivity implements
         mLocationsAdapter = new LocationsAdapter(this, this);
         mRecyclerView.setAdapter(mLocationsAdapter);
 
+        Location refLocation = new Location("");
+        refLocation.setLatitude(mCurrentLatitude);
+        refLocation.setLongitude(mCurrentLongitude);
+
         // Get ViewModel and start observing data.
         getViewModel().getLocations().observe(this, locationEntries -> {
             if (locationEntries != null && locationEntries.size() != 0) {
                 mMap.clear();
+
+                Collections.sort(locationEntries, new Comparator<LocationEntry>() {
+                    @Override
+                    public int compare(LocationEntry locationEntry1, LocationEntry locationEntry2) {
+                        float distance1 =  refLocation.distanceTo(locationEntry1.getLocation());
+                        locationEntry1.setDistance(distance1);
+                        float distance2 =  refLocation.distanceTo(locationEntry2.getLocation());
+                        locationEntry2.setDistance(distance2);
+                        if (distance1 == distance2)
+                            return 0;
+                        else if (distance1 > distance2)
+                            return 1;
+                        else
+                            return -1;
+                    }
+                });
+
                 // refresh list
                 mLocationsAdapter.reloadLocations(locationEntries);
 

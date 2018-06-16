@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import photography.social.com.scenicsydney.R;
@@ -55,7 +56,15 @@ class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.LocationAda
 
         locationAdapterViewHolder.locationName.setText(locationEntry.getName());
         locationAdapterViewHolder.locationDescription.setText(locationEntry.getNotes());
-        locationAdapterViewHolder.distanceFromUser.setText(locationEntry.getNotes());
+
+        int distanceInMeters = Math.round(locationEntry.getDistance());
+        String distanceString = "" ;
+        if(distanceInMeters > 1000) {
+            distanceString = new DecimalFormat("#.##").format(distanceInMeters * 0.001) + " km";
+        } else {
+            distanceString = distanceInMeters+ " meters";
+        }
+        locationAdapterViewHolder.distanceFromUser.setText(distanceString);
     }
 
     /**
