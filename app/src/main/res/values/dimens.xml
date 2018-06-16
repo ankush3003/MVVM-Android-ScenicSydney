@@ -1,8 +1,8 @@
 <resources>
     <!-- Screen Margins for MainActivity -->
-    <dimen name="main_activity_bottom_bar_height">72dp</dimen>
-    <dimen name="main_activity_bottom_bar_header_height">64dp</dimen>
-    <dimen name="main_activity_bottom_bar_header_textsize">20sp</dimen>
+    <dimen name="main_activity_bottom_bar_height">56dp</dimen>
+    <dimen name="main_activity_bottom_bar_header_height">48dp</dimen>
+    <dimen name="main_activity_bottom_bar_header_textsize">16sp</dimen>
     <dimen name="main_activity_bottom_bar_header_child_margin">8dp</dimen>
     <dimen name="main_activity_bottom_bar_icon_width_height">28dp</dimen>
     <dimen name="main_activity_bottom_bar_shadow">5dp</dimen>

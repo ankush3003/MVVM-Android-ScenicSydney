@@ -3,6 +3,7 @@ package photography.social.com.scenicsydney.ui.main;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +56,12 @@ class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.LocationAda
         LocationEntry locationEntry = mLocations.get(position);
 
         locationAdapterViewHolder.locationName.setText(locationEntry.getName());
-        locationAdapterViewHolder.locationDescription.setText(locationEntry.getNotes());
+
+        if(TextUtils.isEmpty(locationEntry.getNotes())) {
+            locationAdapterViewHolder.locationDescription.setText("No Description provided");
+        } else {
+            locationAdapterViewHolder.locationDescription.setText(locationEntry.getNotes());
+        }
 
         int distanceInMeters = Math.round(locationEntry.getDistance());
         String distanceString = "" ;

@@ -1,8 +1,6 @@
 package photography.social.com.scenicsydney.ui.main;
 
 import android.app.Activity;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.location.Location;
@@ -18,11 +16,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import photography.social.com.scenicsydney.R;
 import photography.social.com.scenicsydney.data.database.LocationEntry;
 import photography.social.com.scenicsydney.ui.detail.DetailActivity;
@@ -35,7 +35,10 @@ public class MainActivity extends FragmentActivity implements
         LocationsAdapter.LocationsAdapterOnItemClickHandler {
 
     private GoogleMap mMap;
-    private RecyclerView mRecyclerView;
+
+    @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
+    @BindView(R.id.sliding_layout) SlidingUpPanelLayout slidingUpPanelLayout;
+
     private LocationsAdapter mLocationsAdapter;
     private final int mDeatilActivityRequestCode = 101;
     private Marker mLastCustomMarker = null;
@@ -49,12 +52,11 @@ public class MainActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        mRecyclerView = findViewById(R.id.recycler_view);
     }
 
 
@@ -75,6 +77,15 @@ public class MainActivity extends FragmentActivity implements
         mMap.setOnMarkerClickListener(this);
 
         populateList();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED) {
+            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            return;
+        }
+        super.onBackPressed();
     }
 
     @Override
@@ -131,24 +142,15 @@ public class MainActivity extends FragmentActivity implements
                 // refresh list
                 mLocationsAdapter.reloadLocations(locationEntries);
 
-                // refresh list
-                LatLng latLng = null;
-
                 for (LocationEntry locationEntry: locationEntries) {
-                    latLng = new LatLng(locationEntry.getLocation().getLatitude(), locationEntry.getLocation().getLongitude());
-
                     mMap.addMarker(new MarkerOptions()
-                            .position(latLng)
+                            .position(new LatLng(locationEntry.getLocation().getLatitude(),
+                                    locationEntry.getLocation().getLongitude()))
                             .title(locationEntry.getName()));
                 }
-
-                if(latLng != null) {
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                    mMap.animateCamera(CameraUpdateFactory.zoomTo( 11.0f ) );
-                }
             }
-
         });
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mCurrentLatitude, mCurrentLongitude), 11.5f));
     }
 
     /**
