@@ -10,3 +10,4 @@ This project demonstrates usage of Google maps SDK in Android. A simple two page
 1. Butterknife https://github.com/JakeWharton/butterknife
 2. Google Maps https://developers.google.com/maps/documentation/android-sdk/intro
 3. Sliding up panel https://github.com/umano/AndroidSlidingUpPanel
+4. Room Persistence library https://developer.android.com/topic/libraries/architecture/room
