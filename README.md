@@ -13,6 +13,9 @@ This project demonstrates usage of Google maps SDK in Android. A simple two page
 4. For now, application assumes User's current location at (-33.9045681462, 151.1956366896). Marker list screen sorts data based on distance from this reference point. This location can be updated as per User's current location when required.
 5. MVVM architecture with ROOM library is used for flexibility and persistence.
 
+## Demo
+![App Demo](https://github.com/ankush3003/Scenic-Sydney-POC/blob/master/scenicsydney.gif)
+
 ## References:
 1. Butterknife https://github.com/JakeWharton/butterknife
 2. Google Maps https://developers.google.com/maps/documentation/android-sdk/intro
